@@ -1,139 +1,61 @@
-module.exports = function toReadable (number) {
-    let hundredths = Math.floor(number/100);
-    let decimals = Math.floor((number - hundredths*100)/10)
-    let singleNumber = number - hundredths*100 - decimals*10;
+module.exports = function toReadable(number) {
+  const numbers = {
+    0: 'zero',
+    1: 'one',
+    2: 'two',
+    3: 'three',
+    4: 'four',
+    5: 'five',
+    6: 'six',
+    7: 'seven',
+    8: 'eight',
+    9: 'nine',
+    10: 'ten',
+    11: 'eleven',
+    12: 'twelve',
+    13: 'thirteen',
+    14: 'fourteen',
+    15: 'fifteen',
+    16: 'sixteen',
+    17: 'seventeen',
+    18: 'eighteen',
+    19: 'nineteen',
+    20: 'twenty',
+    30: 'thirty',
+    40: 'forty',
+    50: 'fifty',
+    60: 'sixty',
+    70: 'seventy',
+    80: 'eighty',
+    90: 'ninety'
+  }
 
-    let readableNumber = '';
-    if (number === 0) {
-        readableNumber = 'zero';
-    }
+  if (!number) return numbers[number]
 
-    if (hundredths) {
-        switch(hundredths) {
-            case 1:
-                readableNumber += 'one';
-                break;
-            case 2:
-                readableNumber += 'two';
-                break;
-            case 3:
-                readableNumber += 'three';
-                break;
-            case 4:
-                readableNumber += 'four';
-                break;
-            case 5:
-                readableNumber += 'five';
-                break;
-            case 6:
-                readableNumber += 'six';
-                break;
-            case 7:
-                readableNumber += 'seven';
-                break;
-            case 8:
-                readableNumber += 'eight';
-                break;
-            case 9:
-                readableNumber += 'nine';
-                break;
-        }
-        readableNumber += ' hundred';
-    }
-    if (decimals) {
-        switch(decimals) {
-            case 1: 
-                switch(singleNumber) {
-                    case 0: 
-                        readableNumber += ' ten';
-                        break;
-                    case 1:
-                        readableNumber += ' eleven';
-                        break;
-                    case 2:
-                        readableNumber += ' twelve';
-                        break;
-                    case 3:
-                        readableNumber += ' thirteen';
-                        break;
-                    case 4:
-                        readableNumber += ' fourteen';
-                        break;
-                    case 5:
-                        readableNumber += ' fifteen';
-                        break;
-                    case 6:
-                        readableNumber += ' sixteen';
-                        break;
-                    case 7:
-                        readableNumber += ' seventeen';
-                        break;
-                    case 8: 
-                        readableNumber += ' eighteen';
-                        break;
-                    case 9: 
-                        readableNumber += ' nineteen';
-                        break;
-                }
-                break;
-            case 2: 
-                readableNumber += ' twenty';
-                break;
-            case 3:
-                readableNumber += ' thirty';
-                break;
-            case 4:
-                readableNumber += ' forty';
-                break;
-            case 5:
-                readableNumber += ' fifty';
-                break;
-            case 6: 
-                readableNumber += ' sixty';
-                break;
-            case 7:
-                readableNumber += ' seventy';
-                break;
-            case 8:
-                readableNumber += ' eighty';
-                break;
-            case 9:
-                readableNumber += ' ninety';
-                break;
-        }
-    }
+  let res = ''
+  let currentNumber = number.toString()
 
-    if (decimals != 1) {
-        switch(singleNumber) {
-            case 1:
-                readableNumber += ' one';
-                break;
-            case 2:
-                readableNumber += ' two';
-                break;
-            case 3:
-                readableNumber += ' three';
-                break;
-            case 4:
-                readableNumber += ' four';
-                break;
-            case 5:
-                readableNumber += ' five';
-                break;
-            case 6:
-                readableNumber += ' six';
-                break;
-            case 7:
-                readableNumber += ' seven';
-                break;
-            case 8:
-                readableNumber += ' eight';
-                break;
-            case 9:
-                readableNumber += ' nine';
-                break;
-        }
-    }
-    
-    return readableNumber.trim();
+  let singleNumber = +currentNumber[currentNumber.length - 1]
+  let decimalNumber = currentNumber.length > 1 ? +currentNumber[currentNumber.length - 2] * 10 : null
+  let hundredNumber = currentNumber.length > 2 ? +currentNumber[currentNumber.length - 3] : null
+
+  if (hundredNumber) {
+    res += numbers[hundredNumber] + ' hundred'
+  }
+
+  if (decimalNumber + singleNumber < 20 && decimalNumber + singleNumber > 9) {
+    res += ' ' + numbers[decimalNumber + singleNumber]
+
+    return res.trim()
+  } 
+
+  if (decimalNumber) {
+    res += ' ' + numbers[decimalNumber]
+  }
+
+  if (singleNumber) {
+    res += ' ' + numbers[singleNumber]
+  }
+
+  return res.trim()
 }
